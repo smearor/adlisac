@@ -17,6 +17,3 @@ gtk4 = { workspace = true }
 libc = { workspace = true }
 
 [features]
-
-[[example]]
-name = "simple"

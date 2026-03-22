@@ -48,11 +48,6 @@ impl Compositor {
         }
     }
 
-    //#[doc(alias = "casilda_compositor_spawn_async")]
-    //pub fn spawn_async(&self, working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: /*Ignored*/glib::SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, error: /*Ignored*/Option<glib::Error>) -> Result<(/*Ignored*/glib::Pid), glib::Error> {
-    //    unsafe { TODO: call ffi:casilda_compositor_spawn_async() }
-    //}
-
     pub fn socket(&self) -> Option<glib::GString> {
         ObjectExt::property(self, "socket")
     }

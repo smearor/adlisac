@@ -31,7 +31,7 @@ macro_rules! assert_initialized_main_thread {
 use ffi;
 pub use auto::*;
 mod auto;
-
+pub mod spawn_async;
 
 pub mod functions {
     // pub use super::auto::functions::*;
