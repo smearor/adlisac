@@ -1,0 +1,26 @@
+[options]
+library = "Casilda"
+version = "1.0"
+min_cfg_version = "1.0"
+target_path = "."
+girs_directories = ["../gir-files", "/usr/share/gir-1.0", "/usr/local/share/gir-1.0"]
+work_mode = "normal"
+single_version_file = true
+generate_safety_asserts = true
+deprecate_by_min_version = true
+generate_builder = true
+
+#external_libraries = [
+#    "GLib",
+#    "GObject",
+#    "Gdk",
+#    "Gtk",
+#]
+
+generate = [
+    "Casilda.Compositor",
+    # "Casilda.CompositorBuilder",
+    # "Casilda.Compositor::spawn_async"
+]
+
+manual = []

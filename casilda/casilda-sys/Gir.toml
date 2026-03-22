@@ -1,0 +1,15 @@
+[options]
+library = "Casilda"
+version = "1.0"
+min_cfg_version = "1.0"
+target_path = "."
+girs_directories = ["../../gir-files", "/usr/share/gir-1.0", "/usr/local/share/gir-1.0"]
+work_mode = "sys"
+single_version_file = true
+
+external_libraries = [
+    "GLib",
+    "GObject",
+    "Gdk4",
+    "Gtk4",
+]
