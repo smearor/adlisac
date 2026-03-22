@@ -7,3 +7,6 @@
 mod compositor;
 pub use self::compositor::Compositor;
 
+pub(crate) mod builders {
+    pub use super::compositor::CompositorBuilder;
+}

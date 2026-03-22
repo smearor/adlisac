@@ -25,6 +25,15 @@ impl Compositor {
         }
     }
 
+            // rustdoc-stripper-ignore-next
+            /// Creates a new builder-pattern struct instance to construct [`Compositor`] objects.
+            ///
+            /// This method returns an instance of [`CompositorBuilder`](crate::builders::CompositorBuilder) which can be used to create [`Compositor`] objects.
+            pub fn builder() -> CompositorBuilder {
+                CompositorBuilder::new()
+            }
+        
+
     #[doc(alias = "casilda_compositor_get_client_socket_fd")]
     #[doc(alias = "get_client_socket_fd")]
     pub fn client_socket_fd(&self) -> i32 {
@@ -48,4 +57,36 @@ impl Compositor {
     pub fn socket(&self) -> Option<glib::GString> {
         ObjectExt::property(self, "socket")
     }
+}
+
+impl Default for Compositor {
+                     fn default() -> Self {
+                         glib::object::Object::new::<Self>()
+                     }
+                 }
+
+// rustdoc-stripper-ignore-next
+        /// A [builder-pattern] type to construct [`Compositor`] objects.
+        ///
+        /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+#[must_use = "The builder must be built to be used"]
+pub struct CompositorBuilder {
+            builder: glib::object::ObjectBuilder<'static, Compositor>,
+        }
+
+        impl CompositorBuilder {
+        fn new() -> Self {
+            Self { builder: glib::object::Object::builder() }
+        }
+
+                            pub fn socket(self, socket: impl Into<glib::GString>) -> Self {
+                            Self { builder: self.builder.property("socket", socket.into()), }
+                        }
+
+    // rustdoc-stripper-ignore-next
+    /// Build the [`Compositor`].
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
+    pub fn build(self) -> Compositor {
+assert_initialized_main_thread!();
+    self.builder.build() }
 }
