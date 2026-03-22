@@ -17,10 +17,35 @@ generate_builder = true
 #    "Gtk",
 #]
 
-generate = [
-    "Casilda.Compositor",
-    # "Casilda.CompositorBuilder",
-    # "Casilda.Compositor::spawn_async"
-]
+[[external_library]]
+namespace = "GLib"
+crate_name = "glib"
 
-manual = []
+[[external_library]]
+namespace = "GObject"
+crate_name = "gobject"
+
+[[external_library]]
+namespace = "Gdk"
+crate_name = "gdk4"
+
+[[external_library]]
+namespace = "Gtk"
+crate_name = "gtk4"
+
+[[object]]
+name = "Casilda.Compositor"
+status = "generate"
+final_type = true
+
+[[object.function]]
+name = "spawn_async"
+ignore = true
+
+#generate = [
+#    "Casilda.Compositor",
+#    # "Casilda.CompositorBuilder",
+#    # "Casilda.Compositor::spawn_async"
+#]
+
+#manual = []

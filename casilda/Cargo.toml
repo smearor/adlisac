@@ -11,22 +11,10 @@ all-features = true
 [dependencies]
 bitflags = "2.11"
 ffi = { package = "casilda-sys", path = "./casilda-sys" }
-glib = { workspace = true, features = ["v2_66"] } # version = "0.21"
-gdk4 = { workspace = true } # version = "0.11"
-gtk4 = { workspace = true } # version = "0.11"
-libc = { workspace = true } # "0.2"
-
-#[dependencies.ffi]
-#package = "casilda-sys"
-#path = "./casilda-sys"
-#
-#[dependencies.glib]
-#package = "glib-sys"
-#git = "https://github.com/gtk-rs/gtk-rs-core"
-#
-#[dependencies.gobject]
-#package = "gobject-sys"
-#git = "https://github.com/gtk-rs/gtk-rs-core"
+glib = { workspace = true, features = ["v2_66"] }
+gdk4 = { workspace = true }
+gtk4 = { workspace = true }
+libc = { workspace = true }
 
 [features]
 

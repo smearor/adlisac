@@ -9,8 +9,7 @@ use glib::{prelude::*,translate::*};
 
 glib::wrapper! {
     #[doc(alias = "CasildaCompositor")]
-    pub struct Compositor(Object<ffi::CasildaCompositor, ffi::CasildaCompositorClass>);
-
+    pub struct Compositor(Object<ffi::CasildaCompositor, ffi::CasildaCompositorClass>) @extends gtk4::Widget;
     match fn {
         type_ => || ffi::casilda_compositor_get_type(),
     }

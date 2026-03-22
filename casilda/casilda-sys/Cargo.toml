@@ -5,6 +5,7 @@ edition = { workspace = true }
 build = "build.rs"
 
 [package.metadata.system-deps]
+"casilda-1.0" = { version = "1.0" }
 
 [package.metadata.docs.rs]
 rustc-args = ["--cfg", "docsrs"]
