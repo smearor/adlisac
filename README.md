@@ -25,11 +25,11 @@ graph TD
     B --> C[adlisac-gtk<br/>GTK4 Widget System]
     C --> D[adlisac-rotation<br/>Input/Output Transformation]
     D --> E[Final Rotated Window<br/>With Transformed Input]
-    style A fill: #e1f5fe
-    style B fill: #f3e5f5
-    style C fill: #e8f5e8
-    style D fill: #fff3e0
-    style E fill: #fce4ec
+    style A fill: #2196f3,color:#ffffff
+    style B fill: #9c27b0,color:#ffffff
+    style C fill: #4caf50,color:#ffffff
+    style D fill: #ff9800,color:#ffffff
+    style E fill: #e91e63,color:#ffffff
 ```
 
 ## Quick Start
