@@ -20,6 +20,7 @@ name = "adlisac-gtk"
 version = "1.0.0"
 dependencies = [
  "adlisac-core",
+ "gdk4",
  "glib",
  "glib-unix",
  "gtk4",
