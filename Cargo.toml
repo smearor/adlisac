@@ -2,9 +2,13 @@
 resolver = "3"
 
 members = [
-    "casilda",
-    "casilda/casilda-sys",
-    "casilda-wrapper",
+    "adlisac-core",
+    "adlisac-gtk",
+    "adlisac-rotation",
+    "adlisac-wrapper",
+    #    "casilda",
+    #    "casilda/casilda-sys",
+    #    "casilda-wrapper",
 ]
 
 
@@ -19,21 +23,29 @@ homepage = "https://smearor.io/"
 rust-version = "1.87.0"
 
 [workspace.dependencies]
-clap = "4.6"
-clap_derive = "4.6"
+clap = { version = "4.6", features = ["derive"] }
 glib = "0.22"
+glib-unix = "0.22"
 glib-sys = "0.22"
 gobject-sys = "0.22"
 gdk4 = "0.11"
 gdk4-sys = "0.11"
 gtk4 = "0.11"
+gtk4-layer-shell = "0.8.0"
 gtk4-sys = "0.11"
 libc = "0.2"
+miette = "7.6"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 shell-words = "1.1"
+smithay = { version = "0.7", features = ["backend_winit", "desktop", "wayland_frontend"] }
 system-deps = "7.0"
 tempfile = "3"
+thiserror = "2.0"
+tracing = "0.1"
+wayland-server = "0.31"
+wayland-protocols = "0.32"
+which = "8.0.2"
 
 [workspace.lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)', 'cfg(fn_traits)', 'cfg(unboxed_closures)'] }

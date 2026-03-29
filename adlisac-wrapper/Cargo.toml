@@ -1,24 +1,24 @@
 [package]
-name = "casilda-wrapper"
-description = "Casilda"
+name = "adlisac-wrapper"
+description = "Binary wrapper for adlisac"
 version = { workspace = true }
 edition = { workspace = true }
 readme = "../README.md"
 
 [dependencies]
-casilda = { path = "../casilda" }
+adlisac-core = { path = "../adlisac-core" }
+adlisac-rotation = { path = "../adlisac-rotation" }
+adlisac-gtk = { path = "../adlisac-gtk" }
 clap = { workspace = true, features = ["derive"] }
 glib = { workspace = true, features = ["v2_66"] }
 gdk4 = { workspace = true }
 gtk4 = { workspace = true }
 gtk4-layer-shell = { workspace = true }
-miette = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
+tracing = { workspace = true }
 which = { workspace = true }
 
 [features]
 
 [[bin]]
-name = "casida-wrapper"
+name = "adlisac-wrapper"
 path = "src/main.rs"

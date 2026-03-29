@@ -1,0 +1,108 @@
+use adlisac_core::state::base::AdlisacState;
+use adlisac_core::state::client::ClientState;
+use glib::ControlFlow;
+use glib::IOCondition;
+use glib::MainContext;
+use smithay::reexports::wayland_server::Display;
+use std::cell::RefCell;
+use std::os::unix::io::AsRawFd;
+use std::rc::Rc;
+use std::sync::Arc;
+use tracing::error;
+use tracing::info;
+use tracing::trace;
+use tracing::warn;
+
+pub struct WaylandSource {
+    pub wayland_display: Rc<RefCell<Display<AdlisacState>>>,
+    pub adlisac_state: Rc<RefCell<AdlisacState>>,
+}
+
+impl WaylandSource {
+    pub fn new(wayland_display: Rc<RefCell<Display<AdlisacState>>>, adlisac_state: Rc<RefCell<AdlisacState>>) -> Self {
+        Self {
+            wayland_display,
+            adlisac_state,
+        }
+    }
+
+    pub fn attach(self, _main_context: &MainContext) {
+        // --- 1. Wayland Event Dispatching ---
+
+        let mut display = self.wayland_display.borrow_mut();
+        let display_poll_borrowed_fd = display.backend().poll_fd();
+        let display_poll_raw_fd = display_poll_borrowed_fd.as_raw_fd();
+
+        let display_reference = self.wayland_display.clone();
+        let state_reference = self.adlisac_state.clone();
+
+        // Monitor the Wayland display file descriptor using glib_unix.
+        glib_unix::unix_fd_add_local(
+            display_poll_raw_fd,
+            IOCondition::IN | IOCondition::ERR | IOCondition::HUP,
+            move |_file_descriptor, condition| {
+                if condition.contains(IOCondition::ERR) || condition.contains(IOCondition::HUP) {
+                    error!("Wayland display socket experienced an error or hang-up.");
+                    return ControlFlow::Break;
+                }
+
+                let mut display_borrowed = display_reference.borrow_mut();
+                let mut state_borrowed = state_reference.borrow_mut();
+
+                // Dispatch requests from clients.
+                if let Err(dispatch_error) = display_borrowed.dispatch_clients(&mut *state_borrowed) {
+                    error!(?dispatch_error, "Failed to dispatch Wayland clients.");
+                }
+
+                // Flush events back to clients.
+                if let Err(flush_error) = display_borrowed.flush_clients() {
+                    error!(?flush_error, "Failed to flush Wayland clients.");
+                }
+
+                ControlFlow::Continue
+            },
+        );
+
+        // --- 2. New Connection Listener ---
+        let state_borrowed = self.adlisac_state.borrow();
+        if let Some(listening_socket) = state_borrowed.listening_socket.as_ref() {
+            let listening_socket_raw_fd = listening_socket.as_raw_fd();
+            let display_for_listener = self.wayland_display.clone();
+            let state_for_listener = self.adlisac_state.clone();
+
+            glib_unix::unix_fd_add_local(
+                listening_socket_raw_fd,
+                IOCondition::IN | IOCondition::ERR | IOCondition::HUP,
+                move |_file_descriptor, condition| {
+                    if condition.contains(IOCondition::ERR) || condition.contains(IOCondition::HUP) {
+                        error!("Wayland listening socket experienced an error or hang-up.");
+                        return ControlFlow::Break;
+                    }
+
+                    let mut state_borrowed_for_accept = state_for_listener.borrow_mut();
+                    if let Some(socket_instance) = state_borrowed_for_accept.listening_socket.as_mut() {
+                        match socket_instance.accept() {
+                            Ok(Some(new_client_stream)) => {
+                                info!("Accepted a new Wayland client connection.");
+                                let mut display_handle = display_for_listener.borrow().handle();
+                                if let Err(insertion_error) = display_handle.insert_client(new_client_stream, Arc::new(ClientState::default())) {
+                                    error!(?insertion_error, "Failed to insert new client into display.");
+                                }
+                            }
+                            Ok(None) => {
+                                // No pending connection is available at this moment.
+                                trace!("No pending connection available on the listening socket.");
+                            }
+                            Err(acceptance_error) => {
+                                error!(?acceptance_error, "Failed to accept new Wayland connection.");
+                            }
+                        }
+                    }
+                    ControlFlow::Continue
+                },
+            );
+        } else {
+            warn!("No listening socket available in AdlisacState.");
+        }
+    }
+}

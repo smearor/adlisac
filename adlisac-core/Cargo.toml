@@ -1,0 +1,17 @@
+[package]
+name = "adlisac-core"
+description = "Adlisac"
+version = { workspace = true }
+edition = { workspace = true }
+readme = "../README.md"
+
+[dependencies]
+glib = { workspace = true, features = ["v2_66", ] }
+miette = { workspace = true }
+smithay = { workspace = true, features = ["backend_winit", "desktop", "wayland_frontend"] }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+wayland-server = { workspace = true }
+wayland-protocols = { workspace = true }
+
+[features]

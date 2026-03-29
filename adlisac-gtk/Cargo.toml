@@ -1,0 +1,17 @@
+[package]
+name = "adlisac-gtk"
+description = "Adlisac"
+version = { workspace = true }
+edition = { workspace = true }
+readme = "../README.md"
+
+[dependencies]
+adlisac-core = { path = "../adlisac-core" }
+glib = { workspace = true, features = ["v2_66"] }
+glib-unix = { workspace = true }
+gtk4 = { workspace = true }
+smithay = { workspace = true, features = ["backend_winit", "desktop", "wayland_frontend"] }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[features]
